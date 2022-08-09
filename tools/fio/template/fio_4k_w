@@ -1,0 +1,14 @@
+[BS 4KB write]
+bs=4k
+direct=1
+thread=32
+rw=randwrite
+filename=/dev/nvme0n1
+iodepth=16
+runtime=20
+numjobs=1
+write_bw_log=bw
+write_lat_log=lat
+write_hist_log=hist
+write_iops_log=iops
+log_avg_msec=1000

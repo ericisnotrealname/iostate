@@ -1,0 +1,6 @@
+[FIO_LOG]
+write_bw_log=jobname
+write_lat_log=jobname
+write_hist_log=jobname
+write_iops_log=jobname
+log_avg_msec=1000
