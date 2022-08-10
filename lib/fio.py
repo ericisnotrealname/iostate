@@ -14,7 +14,8 @@ FMT = "%(asctime)s - %(levelname)s - %(filename)s: %(funcName)s: %(lineno)s line
 # logging.basicConfig(level=logging.INFO, format=FMT, filename=os.path.join(root_path, "log", "script", "fio"+time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))))
 root_path = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
 log_file = os.path.join(root_path, "log", "script", "fio"+time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))+".log")
-logging.basicConfig(level=logging.INFO, format=FMT, filename=log_file)
+logging.basicConfig(level=logging.INFO, format=FMT)
+logging.FileHandler(log_file).setLevel(logging.INFO)
 FIO_PATH = os.path.join(root_path, "tools", "fio")
 STATE_755 = stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
 
