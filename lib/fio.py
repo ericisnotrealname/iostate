@@ -10,11 +10,14 @@ import subprocess
 import configparser
 # import socket
 
+
+logger = logging.getLogger("fio")
+logger.setLevel(logging.DEBUG)
 FMT = "%(asctime)s - %(levelname)s - %(filename)s: %(funcName)s: %(lineno)s line - %(message)s"
 # logging.basicConfig(level=logging.INFO, format=FMT, filename=os.path.join(root_path, "log", "script", "fio"+time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))))
 root_path = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
 log_file = os.path.join(root_path, "log", "script", "fio"+time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))+".log")
-logging.basicConfig(level=logging.INFO, format=FMT)
+# logging.basicConfig(level=logging.INFO, format=FMT)
 formatter = logging.Formatter(FMT)
 file_handler = logging.FileHandler(log_file)
 file_handler.setLevel(logging.INFO)
@@ -23,6 +26,10 @@ file_handler.setFormatter(formatter)
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.INFO)
 stream_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
+
 FIO_PATH = os.path.join(root_path, "tools", "fio")
 STATE_755 = stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
 
@@ -45,7 +52,7 @@ class FIO:
         self.__parm__ = dict()
         self.remote = None
         self.jobfile_path = os.path.join(root_path, "tools", "fio", "jobfiles")
-        self.log = logging.getLogger()
+        self.log = logging.getLogger("fio")
 
     def add_section(self, section):
         if section not in self.__parm__.keys():
