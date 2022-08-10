@@ -14,10 +14,11 @@ import configparser
 logger = logging.getLogger("fio")
 logger.setLevel(logging.DEBUG)
 FMT = "%(asctime)s - %(levelname)s - %(filename)s: %(funcName)s: %(lineno)s line - %(message)s"
-# logging.basicConfig(level=logging.INFO, format=FMT, filename=os.path.join(root_path, "log", "script", "fio"+time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))))
+
 root_path = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
-log_file = os.path.join(root_path, "log", "script", "fio"+time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))+".log")
-# logging.basicConfig(level=logging.INFO, format=FMT)
+log_file = os.path.join(root_path, "log", "script", "fio"+ \
+    time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))+".log")
+
 formatter = logging.Formatter(FMT)
 file_handler = logging.FileHandler(log_file)
 file_handler.setLevel(logging.INFO)
