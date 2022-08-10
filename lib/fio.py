@@ -1,5 +1,3 @@
-# from collections import OrderedDict
-# import sys
 from lib import iostate
 import logging
 import platform
@@ -8,7 +6,6 @@ import time
 import stat
 import subprocess
 import configparser
-# import socket
 
 
 logger = logging.getLogger("fio")
