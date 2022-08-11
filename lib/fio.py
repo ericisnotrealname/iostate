@@ -111,7 +111,7 @@ class FIO:
             if self.__parm__[i] is not None:
                 conf[i] = self.__parm__[i]
         timestamp = time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))
-        jobfile = os.path.join(path, filename+timestamp)
+        jobfile = os.path.join(path, filename+timestamp+".ini")
         file_job = open(jobfile, "w", encoding="utf-8")
         conf.write(file_job, space_around_delimiters=False)
         file_job.close()

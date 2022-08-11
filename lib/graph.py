@@ -27,22 +27,3 @@ class GRAPH_FIO:
             self.bw.set_ylabel("MB/S")
             self.iops.plot(self.x_runtime, self.y_iops, label="iops", color="#FF0000", marker=".", linestyle="-")
 
-
-# if __name__ == "__main__":
-#     import os
-#     import csv
-#     graph = GRAPH_FIO("fio_bw")
-#     root_path = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
-#     with open(os.path.join(root_path, "log", r"fio\fio_log_20220810154922\bw_bw.1.log.172.29.131.97")) as file:
-#         reader = csv.reader(file, delimiter=',')
-#         for row in reader:
-#             graph.x_runtime.append(int(row[0])/1000)
-#             graph.y_bw.append(float(row[1])/1024)
-#     with open(os.path.join(root_path, "log", r"fio\fio_log_20220810154922\iops_iops.1.log.172.29.131.97")) as file:
-#         reader = csv.reader(file, delimiter=',')
-#         for row in reader:
-#             # graph.x_runtime.append(int(row[0])/1000)
-#             graph.y_iops.append(float(row[1])/1024)
-    
-#     graph.generate_chart()
-#     plt.show()
