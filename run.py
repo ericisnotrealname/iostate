@@ -31,3 +31,5 @@ filename = "bw_bw.1.log.172.29.131.97"
 io.generate_bw_graph(current_log_path, file_name=filename)
 
 io.graph.bw_figure.show()
+input()
+# plt.show()
