@@ -1,3 +1,4 @@
+import os
 from lib.fio import FIO
 from matplotlib import pyplot as plt
 
@@ -11,7 +12,7 @@ jobs = {"GLOBAL":{
     "rw":"randwrite",
     "filename":"/dev/nvme0n1",
     "iodepth":"16",
-    "runtime":"20",
+    "runtime":"60",
     "numjobs":"1",
     "write_bw_log":"bw",
     "write_lat_log":"lat",
@@ -30,7 +31,4 @@ current_log_path, file_tail = io.client("172.29.131.97", jobfile)
 # filename = "bw_bw.1.log.172.29.131.97"
 filename = "bw_bw" + file_tail
 io.generate_bw_graph(current_log_path, file_name=filename)
-
-io.graph.bw_figure.show()
-input()
-# plt.show()
+io.graph.bw_figure.savefig(os.path.join(current_log_path, filename+".png"))

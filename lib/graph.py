@@ -16,6 +16,7 @@ class GRAPH_FIO:
             self.bw.set_title("bw")
             self.bw.set_xlabel("runtime/msec")
             self.bw.set_ylabel("MB/S")
+            self.bw.set_ylim(min(self.y_bw) - 20, max(self.y_bw)+ 20)
             self.bw.plot(self.x_runtime, self.y_bw, label="bw", color="#00FF00", marker=".", linestyle="-")
 
     def generate_chart_iops(self):    
