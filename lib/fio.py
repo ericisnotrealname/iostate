@@ -1,8 +1,9 @@
-from lib import iostate
+from lib import iostate, graph
 import logging
 import platform
 import os
 import time
+import csv
 import stat
 import subprocess
 import configparser
@@ -51,6 +52,17 @@ class FIO:
         self.remote = None
         self.jobfile_path = os.path.join(root_path, "tools", "fio", "jobfiles")
         self.log = logging.getLogger("fio")
+        self.graph = graph.GRAPH_FIO("fio")
+
+    def generate_bw_graph(self, current_log_path, file_name):
+        # graph = graph.GRAPH_FIO("fio_bw")
+        log_file = os.path.join(current_log_path,file_name)
+        with open(log_file) as log_csv:
+            reader = csv.reader(log_csv, delimiter=',')
+            for row in reader:
+                self.graph.x_runtime.append(int(row[0])/1000)
+                self.graph.y_bw.append(float(row[1])/1024)
+        self.graph.generate_chart()
 
     def add_section(self, section):
         if section not in self.__parm__.keys():
@@ -141,8 +153,9 @@ class FIO:
         self.log.info(f"start remote server {hostname}:{server_port}")
         log_path = os.path.join(root_path, "log", "fio")
         timestamp = time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))
-        os.makedirs(os.path.join(log_path, f"fio_log_{timestamp}"))
-        os.chdir(os.path.join(log_path, f"fio_log_{timestamp}"))
+        current_log_path = os.path.join(log_path, f"fio_log_{timestamp}")
+        os.makedirs(current_log_path)
+        os.chdir(current_log_path)
         jobfile = self.job_file_path(jobfile)
         cmd = f"{self.fio} --client={hostname},{server_port} {jobfile}"
         self.log.info(f"**local command line**: {cmd}")
@@ -154,6 +167,8 @@ class FIO:
         self.log.info(f"remote pid is: {pid}")
         self.log.info(f"kill remote server: {pid}")
         self.remote.kill(pid)
-        
+
+        file_tail = ".1.log." + hostname
+        return current_log_path, file_tail
 
     
