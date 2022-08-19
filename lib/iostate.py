@@ -1,6 +1,7 @@
 import paramiko
 import json
 import subprocess
+import psutil
 
 
 class REMOTE:
@@ -30,6 +31,9 @@ class REMOTE:
         sftp = self._ssh.open_sftp()
         sftp.put(filename, filepath)
         sftp.close()
+
+    def close(self):
+        self._ssh.close()
 
     def get_pid_by_ss(self, port:int):
         _, stdout, _ = self._ssh.exec_command(f"ss -ntlp | grep {port}")

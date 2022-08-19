@@ -88,11 +88,11 @@ class FIO:
             self.__parm__[section] = {}
         self.__parm__[section][key] = value
 
-    def set_parms(self, section, **kwargs):
+    def set_parms(self, section, parms):
         if section not in self.__parm__.keys():
             self.__parm__[section] = {}
-        for key in kwargs.keys():
-            self.__parm__[section][key] = kwargs[key]
+        for key in parms.keys():
+            self.__parm__[section][key] = parms[key]
 
     def clear_parm(self, section=None):
         if section is not None:
@@ -148,6 +148,9 @@ class FIO:
         stdin, stdout, stderr = self.remote.command(f"/tmp/fio-3.30 --server=0.0.0.0,{server_port}", background=True)
         return stdin, stdout, stderr
 
+    def close_remote(self):
+        self.remote.close()
+
     def client(self, hostname, jobfile, server_port=8765, **kwargs):
         self.remote_server(hostname=hostname,server_port=server_port,**kwargs)
         self.log.info(f"start remote server {hostname}:{server_port}")
@@ -167,6 +170,7 @@ class FIO:
         self.log.info(f"remote pid is: {pid}")
         self.log.info(f"kill remote server: {pid}")
         self.remote.kill(pid)
+        self.close_remote()
 
         file_tail = ".1.log." + hostname
         return current_log_path, file_tail

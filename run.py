@@ -22,8 +22,7 @@ jobs = {"GLOBAL":{
 }}
 
 
-for i in jobs["GLOBAL"].keys():
-    io.set_parm("GLOBAL", i, jobs["GLOBAL"][i])
+io.set_parms("GLOBAL", jobs["GLOBAL"])
 jobfile = io.create_jobfile_from_parm("test", True)
 current_log_path, file_tail = io.client("172.29.131.97", jobfile)
 
