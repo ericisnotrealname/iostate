@@ -50,6 +50,7 @@ class FIO:
             raise RuntimeError("Unknown OS: '{}'".format(system))
         self.__parm__ = dict()
         self.remote = None
+        self.server_port = 8765
         self.jobfile_path = os.path.join(root_path, "tools", "fio", "jobfiles")
         self.log = logging.getLogger("fio")
         self.graph = graph.GRAPH_FIO("fio")
@@ -149,10 +150,18 @@ class FIO:
         return stdin, stdout, stderr
 
     def close_remote(self):
+        try:
+            pid = self.remote.get_pid_by_ss(self.server_port)
+        except:
+            pid = self.remote.get_pid_by_netstat(self.server_port)
+        self.log.info(f"remote pid is: {pid}")
+        self.log.info(f"kill remote server: {pid}")
+        self.remote.kill(pid)
         self.remote.close()
 
     def client(self, hostname, jobfile, server_port=8765, **kwargs):
-        self.remote_server(hostname=hostname,server_port=server_port,**kwargs)
+        self.server_port = server_port
+        self.remote_server(hostname=hostname,server_port=self.server_port,**kwargs)
         self.log.info(f"start remote server {hostname}:{server_port}")
         log_path = os.path.join(root_path, "log", "fio")
         timestamp = time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))
@@ -166,11 +175,11 @@ class FIO:
         
         self.log.info(f"status: {proc}")
         os.chdir(root_path)
-        pid = self.remote.get_pid_by_ss(server_port)
-        self.log.info(f"remote pid is: {pid}")
-        self.log.info(f"kill remote server: {pid}")
-        self.remote.kill(pid)
-        self.close_remote()
+        # pid = self.remote.get_pid_by_ss(server_port)
+        # self.log.info(f"remote pid is: {pid}")
+        # self.log.info(f"kill remote server: {pid}")
+        # self.remote.kill(pid)
+        # self.close_remote()
 
         file_tail = ".1.log." + hostname
         return current_log_path, file_tail
