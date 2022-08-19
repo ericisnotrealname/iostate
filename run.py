@@ -1,9 +1,9 @@
 import os
 from lib.fio import FIO
 from matplotlib import pyplot as plt
+from lib.log import logger
 
-
-
+logger.info("start from: ", __file__)
 io = FIO()
 jobs = {"GLOBAL":{
     "bs": "4k",

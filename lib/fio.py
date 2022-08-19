@@ -1,5 +1,4 @@
-from lib import iostate, graph
-import logging
+from lib import iostate, graph, log
 import platform
 import os
 import time
@@ -8,26 +7,26 @@ import stat
 import subprocess
 import configparser
 
-
-logger = logging.getLogger("fio")
-logger.setLevel(logging.DEBUG)
-FMT = "%(asctime)s - %(levelname)s - %(filename)s: %(funcName)s: %(lineno)s line - %(message)s"
+logger = log.logger
+# logger = logging.getLogger("fio")
+# logger.setLevel(logging.DEBUG)
+# FMT = "%(asctime)s - %(levelname)s - %(filename)s: %(funcName)s: %(lineno)s line - %(message)s"
 
 root_path = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
-log_file = os.path.join(root_path, "log", "script", "fio"+ \
-    time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))+".log")
+# log_file = os.path.join(root_path, "log", "script", "fio"+ \
+#     time.strftime("%Y%m%d%H%M%S", time.localtime(time.time()))+".log")
 
-formatter = logging.Formatter(FMT)
-file_handler = logging.FileHandler(log_file)
-file_handler.setLevel(logging.INFO)
-file_handler.setFormatter(formatter)
+# formatter = logging.Formatter(FMT)
+# file_handler = logging.FileHandler(log_file)
+# file_handler.setLevel(logging.INFO)
+# file_handler.setFormatter(formatter)
 
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.INFO)
-stream_handler.setFormatter(formatter)
+# stream_handler = logging.StreamHandler()
+# stream_handler.setLevel(logging.INFO)
+# stream_handler.setFormatter(formatter)
 
-logger.addHandler(file_handler)
-logger.addHandler(stream_handler)
+# logger.addHandler(file_handler)
+# logger.addHandler(stream_handler)
 
 FIO_PATH = os.path.join(root_path, "tools", "fio")
 STATE_755 = stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
@@ -52,7 +51,7 @@ class FIO:
         self.remote = None
         self.server_port = 8765
         self.jobfile_path = os.path.join(root_path, "tools", "fio", "jobfiles")
-        self.log = logging.getLogger("fio")
+        self.log = logger
         self.graph = graph.GRAPH_FIO("fio")
 
     def generate_bw_graph(self, current_log_path, file_name):
