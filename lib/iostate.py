@@ -1,11 +1,17 @@
 import paramiko
 import json
+import time
 import subprocess
 import psutil
+from lib.log import logger
 
 
 class REMOTE:
     def __init__(self, hostname:str, port:int, username:str, password:str, timeout:int):
+        self.host = hostname
+        self.port = port
+        self.user = username
+        self.password = password
         self._ssh = paramiko.SSHClient()
         self._ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self._ssh.connect(hostname=hostname, port=port, username=username, password=password, 
@@ -29,6 +35,7 @@ class REMOTE:
         :return:
         """
         sftp = self._ssh.open_sftp()
+        logger.info(f"pushing {filename} to {filepath}")
         sftp.put(filename, filepath)
         sftp.close()
 
@@ -60,6 +67,29 @@ class REMOTE:
             if line.startswith('LISTEN'):
                 ports.append(int(line.split()[3].split(":")[-1]))
         return set(ports)
+    #
+    # def reboot(self):
+    #     logger.info("reboot......")
+    #     self._ssh.exec_command("reboot -nf")
+    #     self._ssh.close()
+
+    # def wait_for_reboot_complete(self, timeout=600):
+    #     logger.info(f"waiting for reboot completed, timeout: {timeout}")
+    #     start_time = time.time()
+    #     result = False
+    #     duration = 0
+    #     while duration < timeout:
+    #         logger.info(f"connecting to target, timeout: {duration}")
+    #         try:
+    #             self._ssh.connect(hostname=self.host, port=self.port, username=self.user, password=self.password, timeout=10)
+    #         except:
+    #             pass
+    #         if self._ssh.get_transport().active:
+    #             logger.info("reboot succeed")
+    #             result = True
+    #             break
+    #         duration = time.time() - start_time
+    #     return result
 
     def run_iostat(self, runtime):
         _, stdout, _ = self._ssh.exec_command(self._cmd + str(runtime))
