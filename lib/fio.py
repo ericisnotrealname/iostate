@@ -143,6 +143,12 @@ class FIO:
         self.remote.kill(pid)
         self.remote.close()
 
+    def log_subprocess_output(self, pipe):
+        for line in iter(pipe.readline, b''):  # b'\n'-separated lines
+            logger.info(line)
+            if line == "":
+                break
+
     def client(self, hostname, jobfile, server_port=8765, **kwargs):
         self.server_port = server_port
         self.remote_server(hostname=hostname,server_port=self.server_port,**kwargs)
@@ -155,9 +161,16 @@ class FIO:
         jobfile = self.job_file_path(jobfile)
         cmd = f"{self.fio} --client={hostname},{server_port} {jobfile}"
         self.log.info(f"**local command line**: {cmd}")
-        proc = subprocess.check_call(cmd,shell=True)
-        
-        self.log.info(f"status: {proc}")
+        # proc = subprocess.check_call(cmd,shell=True)
+        process = subprocess.Popen(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        with process.stdout:
+            self.log_subprocess_output(process.stdout)
+        exitcode = process.wait()
+        if exitcode == 0:
+            self.log.info("succeed")
+        else:
+            self.log.error("failed")
+        # self.log.info(f"status: {proc}")
         os.chdir(root_path)
 
         file_tail = ".1.log." + hostname
