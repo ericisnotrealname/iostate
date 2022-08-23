@@ -144,7 +144,7 @@ class FIO:
         self.remote.close()
 
     def log_subprocess_output(self, pipe):
-        for line in iter(pipe.readline, b''):  # b'\n'-separated lines
+        for line in iter(pipe.readline, b''):
             logger.info(line)
             if line == "":
                 break
