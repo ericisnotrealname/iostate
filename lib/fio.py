@@ -143,7 +143,7 @@ class FIO:
         self.remote.kill(pid)
         self.remote.close()
 
-    def log_subprocess_output(self, pipe):
+    def fio_output(self, pipe):
         for line in iter(pipe.readline, b''):
             logger.info(line)
             if line == "":
@@ -164,7 +164,7 @@ class FIO:
         # proc = subprocess.check_call(cmd,shell=True)
         process = subprocess.Popen(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         with process.stdout:
-            self.log_subprocess_output(process.stdout)
+            self.fio_output(process.stdout)
         exitcode = process.wait()
         if exitcode == 0:
             self.log.info("succeed")
