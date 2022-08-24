@@ -1,7 +1,5 @@
 import os
 from lib.fio import FIO
-from matplotlib import pyplot as plt
-from lib.log import logger
 
 
 
@@ -31,5 +29,5 @@ current_log_path, file_tail = io.client("172.29.131.97", jobfile)
 # filename = "bw_bw.1.log.172.29.131.97"
 filename = "bw_bw" + file_tail
 io.generate_bw_graph(current_log_path, file_name=filename)
-io.graph.bw_figure.savefig(os.path.join(current_log_path, filename+".png"))
+# io.graph.bw_figure.savefig(os.path.join(current_log_path, filename+".png"))
 io.close_remote()

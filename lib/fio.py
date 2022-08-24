@@ -39,7 +39,7 @@ class FIO:
         self.log = logger
         self.graph = graph.GRAPH_FIO("fio")
 
-    def generate_bw_graph(self, current_log_path, file_name):
+    def generate_bw_graph(self, current_log_path:str, file_name:str):
         # graph = graph.GRAPH_FIO("fio_bw")
         log_file = os.path.join(current_log_path,file_name)
         with open(log_file) as log_csv:
@@ -48,6 +48,7 @@ class FIO:
                 self.graph.x_runtime.append(int(row[0])/1000)
                 self.graph.y_bw.append(float(row[1])/1024)
         self.graph.generate_chart()
+        self.graph.bw_figure.savefig(os.path.join(current_log_path, file_name+".png"))
 
     def add_section(self, section):
         if section not in self.__parm__.keys():

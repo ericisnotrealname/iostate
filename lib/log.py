@@ -3,7 +3,7 @@ import os, time
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
-FMT = "%(asctime)s - %(levelname)s - %(filename)s: %(funcName)s: %(lineno)s line - %(message)s"
+FMT = "%(asctime)s - %(levelname)s - %(filename)s: %(funcName)s: line %(lineno)s - %(message)s"
 
 root_path = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
 log_file = os.path.join(root_path, "log", "script", "iostate"+ \
