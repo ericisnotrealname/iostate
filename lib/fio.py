@@ -146,9 +146,10 @@ class FIO:
 
     def fio_output(self, pipe):
         for line in iter(pipe.readline, b''):
-            logger.info(line)
             if line == "":
                 break
+            logger.info("bw: %s", line.split("w=")[1].split(']')[0])
+            logger.info("IOPS: %s", line.split("w=")[2].split(' ')[0])
 
     def client(self, hostname, jobfile, server_port=8765, **kwargs):
         self.server_port = server_port
