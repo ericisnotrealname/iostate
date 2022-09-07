@@ -148,8 +148,16 @@ class FIO:
         for line in iter(pipe.readline, b''):
             if line == "":
                 break
-            logger.info("bw: %s", line.split("[")[3].split(']')[0])
-            logger.info("IOPS: %s", line.split("[")[4].split(']')[0])
+            try:
+                if line.split(":")[0].lower() == "jobs":
+                    line_split = line.split("[")
+                    logger.info("bw: %s; IOPS: %s; eta:%s", 
+                    line_split[3].split(']')[0], line_split[4].split(']')[0], line_split[5].split(']')[0].split("eta")[1])
+                else:
+                    logger.info(line.split("\n")[0])
+            except:
+                logger.info(line.split("\n")[0])
+            # logger.info("IOPS: %s", line.split("[")[4].split(']')[0])
 
     def client(self, hostname, jobfile, server_port=8765, **kwargs):
         self.server_port = server_port
